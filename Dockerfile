@@ -1,13 +1,5 @@
-FROM alpine:3.3
+FROM ddamon/base-alpine:latest
 MAINTAINER David Damon <dwdamon@gmail.com>
-
-##
-## ROOTFS
-##
-
-# root filesystem
-COPY rootfs /
-
 
 # Java Version
 ENV JAVA_VERSION_MAJOR 8
@@ -16,11 +8,7 @@ ENV JAVA_VERSION_BUILD 14
 ENV JAVA_PACKAGE       jdk
 
 # s6 overlay
-ADD https://github.com/just-containers/s6-overlay/releases/download/v1.16.0.1/s6-overlay-amd64.tar.gz /tmp/s6-overlay.tar.gz
-RUN tar xvfz /tmp/s6-overlay.tar.gz -C / \
-  && apk add --update bash \
-  && apk add --update execline \
-  && apk add --update curl ca-certificates tar \
+RUN apk add --update curl ca-certificates tar \
   && curl -Ls https://circle-artifacts.com/gh/andyshinn/alpine-pkg-glibc/6/artifacts/0/home/ubuntu/alpine-pkg-glibc/packages/x86_64/glibc-2.21-r2.apk > /tmp/glibc-2.21-r2.apk \
   && apk add --allow-untrusted /tmp/glibc-2.21-r2.apk \
   && mkdir /opt && curl -jksSLH "Cookie: oraclelicense=accept-securebackup-cookie"\
